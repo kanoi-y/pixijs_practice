@@ -18,6 +18,7 @@ function createButton(text, width, height, color, onClick) {
     backColor.drawRoundedRect(0, 0, width, height, 8); // 位置(0,0)を左上にして、width,heghtの四角形を描画
     backColor.endFill(); // 描画完了
     backColor.interactive = true; // クリック可能にする
+    backColor.buttonMode = true;
     backColor.on("pointerdown", onClick); // クリック時にonClickの関数を実行する
     buttonContainer.addChild(backColor); // 背景をボタンコンテナに追加
     // テキストに関するパラメータを定義する(ここで定義した意外にもたくさんパラメータがある)
