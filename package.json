@@ -1,0 +1,32 @@
+{
+  "name": "pixijs_practice",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "webpack": "webpack-cli -w"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/kanoi-y/pixijs_practice.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/kanoi-y/pixijs_practice/issues"
+  },
+  "homepage": "https://github.com/kanoi-y/pixijs_practice#readme",
+  "devDependencies": {
+    "@types/typescript": "^2.0.0",
+    "typescript": "^4.3.5",
+    "webpack": "^5.42.1",
+    "webpack-cli": "^4.7.2"
+  },
+  "dependencies": {
+    "pixi-filters": "^4.1.3",
+    "pixi-sound": "^3.0.5",
+    "pixi.js": "^6.0.4"
+  }
+}
