@@ -42,10 +42,6 @@ const setup = () => {
     apple.y = app.screen.height / 2;
     apple.width = 130;
     apple.height = 130;
-    // apple.interactive = true;
-    // apple.on("pointermove", (e) => {
-    //   console.log(e);
-    // })
     gameScene.addChild(apple);
 
     // テキスト
@@ -97,6 +93,10 @@ const setup = () => {
     // 上に被るappleのY座標
     let backAppleY = 0;
 
+    // 素早いリンゴの座標を再設定するかどうかのフラッグ
+    let quickAppleFlag = false;
+    let quickAppleX: 1 | -1, quickAppleY: 1 | -1;
+
     // 一度クリックしたappleを保存する配列
     let countedApple = [];
 
@@ -112,7 +112,7 @@ const setup = () => {
       apple.width = 80;
       apple.height = 80;
       apple.interactive = true; // クリック可能にする
-      apple.on("pointerdown", (e) => {
+      apple.on("pointerdown", (e: PointerEvent) => {
         if (!countedApple.includes(i)) {
           count++;
           countedApple.push(i);
@@ -124,6 +124,7 @@ const setup = () => {
       gameScene.addChild(apple);
     }
 
+    // 上に載っているリンゴ
     const backApple = new PIXI.Sprite(texture);
     backApple.anchor.set(0.5);
     backApple.x = 250;
@@ -131,16 +132,34 @@ const setup = () => {
     backApple.width = 80;
     backApple.height = 80;
     backApple.interactive = true; // クリック可能にする
-    backApple.on("pointerdown", (e) => {
+    backApple.on("pointerdown", (e: PointerEvent) => {
       if (!countedApple.includes(4)) {
         count++;
         countedApple.push(4);
       }
       onDragStart(e);
     });
+
     backApple.on("pointerup", onDragEnd);
     backApple.on("pointerupoutside", onDragEnd);
     gameScene.addChild(backApple);
+
+    // 早く動いているリンゴ
+    const quickApple = new PIXI.Sprite(texture);
+    quickApple.anchor.set(0.5);
+    quickApple.x = app.screen.width + 50;
+    quickApple.y = -50;
+    quickApple.width = 80;
+    quickApple.height = 80;
+    quickApple.interactive = true;
+    quickApple.on("pointerdown", (e: PointerEvent) => {
+      if (!countedApple.includes(5)) {
+        count++;
+        countedApple.push(5);
+      }
+    });
+
+    gameScene.addChild(quickApple);
 
     // 選択中の要素を保存
     let selectedTarget;
@@ -192,6 +211,27 @@ const setup = () => {
 
     const gameLoop = () => {
       countText.text = `count: ${count}`;
+
+      if (quickAppleFlag === false) {
+        if (Math.floor(Math.random() * 100) < 1) {
+          quickApple.x =
+            Math.floor(Math.random() * 2) === 0 ? -50 : app.screen.width + 50;
+          quickApple.y =
+            Math.floor(Math.random() * 2) === 0 ? -50 : app.screen.height + 50;
+
+          quickAppleX = quickApple.x === -50 ? 1 : -1;
+          quickAppleY = quickApple.y === -50 ? 1 : -1;
+          quickAppleFlag = true;
+        }
+      }
+      if (quickAppleFlag === true) {
+        quickApple.x += 9 * quickAppleX;
+        quickApple.y += 9 * quickAppleY;
+
+        if (quickApple.x > app.screen.width + 50 || quickApple.x < -50) {
+          quickAppleFlag = false;
+        }
+      }
     };
     sceneManager.addGameLoop(gameLoop);
   };
